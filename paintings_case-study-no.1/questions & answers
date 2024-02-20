@@ -115,7 +115,7 @@ WHERE cte_country.rk1 = 1
 AND cte_city.rk2 = 1
 -------------------------------------------------------------------------------------------------------------------
 
-/*Question 7: Identify the artist and the museum where the most expensive and least expensive painting is placed. 
+/*Question 7: Identify the artists and the museums where the most expensive and least expensive paintings are placed. 
 Display the artist name, sale_price, painting name, canvas label, museum name, museum city and museum country.*/
 
 SELECT e.full_name AS artist_name, a.name AS painting_name, p.regular_price AS price, 
