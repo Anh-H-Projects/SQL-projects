@@ -83,7 +83,7 @@ WITH museum_paintings AS (
 	SELECT m.name AS museum_name, 
 	COUNT(aw.work_id) AS num_of_paintings,
 	RANK() OVER(ORDER BY count(w.work_id) DESC) as museum_rank
-	FROM museums m JOIN art_work  aw ON m.museum_id = aw.museum_id
+	FROM museums m JOIN art_work aw ON m.museum_id = aw.museum_id
 	GROUP BY m.name
 	)
 SELECT museum_name, num_of_paintings
