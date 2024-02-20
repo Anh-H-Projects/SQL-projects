@@ -1,4 +1,5 @@
 A Kaggle dataset named "paintings" is used in this practice.
+The data tables are listed in the "tables" folder under the main folder.
 ---------------------------------------------------------------------------
 
 /*Question 1: Write a query to fetch the museums (name and city) that are open on both Monday and Sunday.*/
