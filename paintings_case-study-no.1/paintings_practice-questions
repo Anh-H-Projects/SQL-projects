@@ -84,3 +84,27 @@ WITH museum_paintings AS (
 SELECT museum_name, num_of_paintings
 FROM museum_paintings
 WHERE museum_rank < 6
+---------------------------------------------------------------------------
+
+/*Question 6: Which country and city have the most museums? Output two separate columns to display the country and the city.
+If there are multiple values, separate them with comma.*/
+
+WITH 
+cte_country AS (
+	SELECT country, COUNT(1),
+	RANK() OVER(ORDER BY COUNT(1) DESC) AS rk1
+	FROM museums
+	GROUP BY country
+	),
+cte_city AS (
+	SELECT city, COUNT(1),
+	RANK() OVER(ORDER BY COUNT(1) DESC) AS rk2
+	FROM museums
+	GROUP BY city
+	)
+SELECT string_agg(DISTINCT country, ' , ') AS country, 
+       string_agg(city, ' , ') AS city
+FROM cte_country CROSS JOIN cte_city
+WHERE cte_country.rk1 = 1
+AND cte_city.rk2 = 1
+---------------------------------------------------------------------------
