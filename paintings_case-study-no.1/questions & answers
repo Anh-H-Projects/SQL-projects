@@ -1,7 +1,7 @@
 A Kaggle dataset named "paintings" is used in this practice.
 ---------------------------------------------------------------------------
 
-/*Question 1: Fetch the museums (name and city) that are open on both Monday and Sunday.*/
+/*Question 1: Write a query to fetch the museums (name and city) that are open on both Monday and Sunday.*/
 
 SELECT m.name AS museum_name, m.city
 FROM museum_hours AS mh
@@ -15,7 +15,7 @@ AND EXISTS (
 	)
 ---------------------------------------------------------------------------
 
-/*Question 2: Fetch the museums (name and city) that are not open on Monday.*/
+/*Question 2: Write a query to fetch the museums (name and city) that are not open on Monday.*/
 
 SELECT DISTINCT m.name AS museum_name, m.city
 FROM museum_hours AS mh
@@ -28,7 +28,7 @@ WHERE mh.museum_id NOT IN(
 	)
 ---------------------------------------------------------------------------
 
-/*Question 3: Which museum is open for the longest during a day? Display museum name, state, opening duration and day.*/
+/*Question 3: Write a query to find out which museum is open for the longest during a day? Display museum name, state, opening duration and day.*/
 
 WITH museum_open_duration AS (
 	SELECT m.name AS museum_name, m.state, mh.day,
@@ -44,7 +44,7 @@ FROM museum_open_duration
 WHERE rk < 2
 ---------------------------------------------------------------------------
 
-/*Question 4: Which museum has the most paintings of the most popular style?
+/*Question 4: Write a query to find out which museum has the most paintings of the most popular style?
 (The most popular style is defined based on the number of panitings of each style).*/
 
 SELECT m.name, m.city, count(aw.name) AS num_of_paintings_of_impressionism
@@ -63,7 +63,7 @@ ORDER BY num_of_paintings_of_impressionism DESC
 LIMIT 1
 ---------------------------------------------------------------------------
 
-/*Question 5: Fetch the top 5 museums (name and number of paintings) with the most paintings.*/
+/*Question 5: Write a query to fetch the top 5 museums (name and number of paintings) with the most paintings.*/
 
 Query no.1:
 SELECT m.name AS museum_name, COUNT(aw.work_id) AS num_of_paintings
@@ -86,7 +86,8 @@ FROM museum_paintings
 WHERE museum_rank < 6
 ---------------------------------------------------------------------------
 
-/*Question 6: Which country and city have the most museums? Output two separate columns to display the country and the city.
+/*Question 6: Write a query to find out which country and city have the most museums? 
+Output two separate columns to display the country and the city.
 If there are multiple values, separate them with comma.*/
 
 WITH 
