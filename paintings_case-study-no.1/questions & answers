@@ -1,6 +1,7 @@
 A Kaggle dataset named "paintings" is used in this practice.
 The data tables are listed in the "tables" folder under the main folder.
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 /*Question 1: Write a query to fetch the museums (name and city) that are open on both Monday and Sunday.*/
 
@@ -14,7 +15,7 @@ AND EXISTS (
 	WHERE mh1.museum_id = mh2.museum_id
 	AND day = 'Monday'
 	)
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 /*Question 2: Write a query to fetch the museums (name and city) that are not open on Monday.*/
 
@@ -27,9 +28,10 @@ WHERE mh.museum_id NOT IN(
 	FROM museum_hours
 	WHERE day = 'Monday'
 	)
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
-/*Question 3: Write a query to find out which museum is open for the longest during a day? Display museum name, state, opening duration and day.*/
+/*Question 3: Write a query to find out which museum is open for the longest during a day? 
+Display museum name, state, opening duration and day.*/
 
 WITH museum_open_duration AS (
 	SELECT m.name AS museum_name, m.state, mh.day,
@@ -43,7 +45,7 @@ WITH museum_open_duration AS (
 SELECT museum_name, state, day, open_time, close_time, duration 
 FROM museum_open_duration
 WHERE rk < 2
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 /*Question 4: Write a query to find out which museum has the most paintings of the most popular style?
 (The most popular style is defined based on the number of panitings of each style).*/
@@ -62,11 +64,12 @@ WHERE aw.style = (
 GROUP BY m.name, m.city
 ORDER BY num_of_paintings_of_impressionism DESC
 LIMIT 1
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 /*Question 5: Write a query to fetch the top 5 museums (name and number of paintings) with the most paintings.*/
 
 Query no.1:
+-----------
 SELECT m.name AS museum_name, COUNT(aw.work_id) AS num_of_paintings
 FROM museums m JOIN art_work aw
 ON m.museum_id = aw.museum_id
@@ -75,6 +78,7 @@ ORDER BY num_of_paintings DESC
 LIMIT 5
 
 Query no.2:
+-----------
 WITH museum_paintings AS (
 	SELECT m.name AS museum_name, 
 	COUNT(aw.work_id) AS num_of_paintings,
@@ -85,7 +89,7 @@ WITH museum_paintings AS (
 SELECT museum_name, num_of_paintings
 FROM museum_paintings
 WHERE museum_rank < 6
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
 
 /*Question 6: Write a query to find out which country and city have the most museums? 
 Output two separate columns to display the country and the city.
@@ -109,4 +113,26 @@ SELECT string_agg(DISTINCT country, ' , ') AS country,
 FROM cte_country CROSS JOIN cte_city
 WHERE cte_country.rk1 = 1
 AND cte_city.rk2 = 1
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------
+
+/*Question 7: Identify the artist and the museum where the most expensive and least expensive painting is placed. 
+Display the artist name, sale_price, painting name, canvas label, museum name, museum city and museum country.*/
+
+SELECT e.full_name AS artist_name, a.name AS painting_name, p.regular_price AS price, 
+c.label AS canvas_label, m.name AS museum_name, m.city AS museum_city, m.country AS museum_country
+FROM product_size p LEFT JOIN canvas_size c ON p.size_id = c.size_id
+JOIN art_work a ON p.work_id = a.work_id
+JOIN artists e ON a.artist_id = e.artist_id
+JOIN museums m ON a.museum_id = m.museum_id
+WHERE p.regular_price = (SELECT MAX(regular_price) FROM product_size)
+
+UNION ALL
+
+SELECT e.full_name AS artist_name, a.name AS painting_name, p.regular_price AS price, 
+c.label AS canvas_label, m.name AS museum_name, m.city AS museum_city, m.country AS museum_country
+FROM product_size p LEFT JOIN canvas_size c ON p.size_id = c.size_id
+JOIN art_work a ON p.work_id = a.work_id
+JOIN artists e ON a.artist_id = e.artist_id
+JOIN museums m ON a.museum_id = m.museum_id
+WHERE p.regular_price = (SELECT MIN(regular_price) FROM product_size)
+-------------------------------------------------------------------------------------------------------------------
