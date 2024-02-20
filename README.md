@@ -1,0 +1,1 @@
+# paintings_SQL-case-study
